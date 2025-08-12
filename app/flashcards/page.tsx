@@ -58,17 +58,24 @@ export default function FlashcardsPage(){
   function rate(quality: "again"|"good"){
     if(!current) return;
     const { newLevel, due } = scheduleNext(current.level, quality);
-    setDeck(prev => prev.map(c => c.id===current.id ? { ...c, level: newLevel, dueISO: due } : c));
+    // Explicitly type the previous deck as an array of Card to satisfy
+    // TypeScript when noImplicitAny is enabled. Without this annotation,
+    // `prev` defaults to `any` causing a compilation error on Vercel.
+    setDeck((prev: Card[]) => prev.map(c => c.id===current.id ? { ...c, level: newLevel, dueISO: due } : c));
     setShowBack(false);
     setIdx(i => (i+1) % Math.max(queue.length, 1));
   }
 
   function addCard(front: string, back: string, tag?: string){
     const c: Card = { id: Math.random().toString(36).slice(2), front, back, tag, level: 1, dueISO: new Date().toISOString() };
-    setDeck(prev => [c, ...prev]);
+    // Specify the type of the accumulator array to avoid implicit any
+    setDeck((prev: Card[]) => [c, ...prev]);
   }
 
-  function removeCard(id:string){ setDeck(prev => prev.filter(c => c.id !== id)); }
+function removeCard(id:string){
+    // Provide a type for the previous deck to avoid implicit any
+    setDeck((prev: Card[]) => prev.filter(c => c.id !== id));
+}
 
   function exportJSON(){
     const blob = new Blob([JSON.stringify(deck, null, 2)], { type: "application/json" });
