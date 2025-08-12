@@ -11,13 +11,19 @@ export async function POST(req: Request) {
 
     const system = `You are an LSAT Socratic tutor. Keep timing discipline, require prediction-before-choices, and log takeaways. If the user requests copyrighted questions verbatim, refuse and provide original drills instead.`;
 
-    const stream = await client.responses.stream({
+    // Use the chat completions API with streaming enabled to avoid using the
+    // deprecated `responses.stream` method. The OpenAI Node client exposes
+    // a `chat.completions.create` method that returns a stream when
+    // `stream: true` is passed. This mirrors the Chat Completions API
+    // behaviour and is supported in modern versions of the SDK.
+    const stream = await client.chat.completions.create({
       model: "gpt-4.1-mini",
-      input: [
+      messages: [
         { role: "system", content: system },
-        { role: "user", content: `User meta: ${JSON.stringify(meta||{})}` },
-        { role: "user", content: prompt }
+        { role: "user", content: `User meta: ${JSON.stringify(meta || {})}` },
+        { role: "user", content: prompt },
       ],
+      stream: true,
     });
 
     return new Response(stream.toReadableStream(), {
