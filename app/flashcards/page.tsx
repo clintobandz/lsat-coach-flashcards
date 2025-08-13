@@ -133,6 +133,7 @@ export default function FlashcardsPage(){
 
         <section className="rounded-2xl border bg-white p-4">
           <h2 className="font-semibold mb-2">All Cards</h2>
+          
           <div className="grid gap-2">
             {deck.map(c => (
               <div key={c.id} className="p-3 rounded-xl border flex items-start gap-3">
