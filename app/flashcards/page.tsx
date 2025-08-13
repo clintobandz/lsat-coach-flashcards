@@ -1,4 +1,4 @@
-"use client";
+."use client";
 import { useEffect, useMemo, useState } from "react";
 
 type Card = { id: string; front: string; back: string; tag?: string; level: number; dueISO: string };
@@ -33,7 +33,6 @@ function buildSampleDeck(): Card[] {
     mk("RC: Topic vs Scope", "Topic=general subject; Scope=the specific slice the author addresses.", "RC"),
   ];
 }
-
 export default function FlashcardsPage(){
   const [deck, setDeck] = useLocal<Card[]>("ls.flashcards.deck", []);
   const [showBack, setShowBack] = useState(false);
@@ -69,7 +68,9 @@ export default function FlashcardsPage(){
 
   const [front, setFront] = useState("");
   const [back, setBack] = useState("");
-  const [tag, setTag] = useState("");
+
+    
+    const [tag, setTag] = useState("");
 
   return (
     <main className="min-h-screen bg-neutral-50 text-neutral-900 p-6">
