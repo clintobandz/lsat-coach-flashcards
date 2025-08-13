@@ -63,30 +63,9 @@ export default function FlashcardsPage(){
     // `prev` defaults to `any` causing a compilation error on Vercel.
     setDeck((prev: Card[]) => prev.map(c => c.id===current.id ? { ...c, level: newLevel, dueISO: due } : c));
     setShowBack(false);
-    setIdx(i => (i+1) % Math.max(queue.length, 1));
-  }
+   setIdx((i: number) => (i + 1) % Math.max(queue.length, 1));
 
-  function addCard(front: string, back: string, tag?: string){
-    const c: Card = { id: Math.random().toString(36).slice(2), front, back, tag, level: 1, dueISO: new Date().toISOString() };
-    // Specify the type of the accumulator array to avoid implicit any
-    setDeck((prev: Card[]) => [c, ...prev]);
-  }
 
-function removeCard(id:string){
-    // Provide a type for the previous deck to avoid implicit any
-    setDeck((prev: Card[]) => prev.filter(c => c.id !== id));
-}
-
-  function exportJSON(){
-    const blob = new Blob([JSON.stringify(deck, null, 2)], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a"); a.href = url; a.download = `flashcards_${new Date().toISOString().slice(0,10)}.json`; a.click(); URL.revokeObjectURL(url);
-  }
-
-  async function importJSON(file: File){
-    const text = await file.text();
-    try { const arr = JSON.parse(text); if(Array.isArray(arr)) setDeck(arr); } catch {}
-  }
 
   const [front, setFront] = useState("");
   const [back, setBack] = useState("");
@@ -132,7 +111,7 @@ function removeCard(id:string){
                     <button className="px-4 py-2 rounded-xl border bg-white" onClick={()=>rate("good")}>Good (2)</button>
                   </div>
                 )}
-                <button className="ml-auto px-3 py-2 text-sm opacity-70 hover:opacity-100" onClick={()=>setShowBack(b=>!b)}>Flip</button>
+                 <button className="ml-auto px-3 py-2 text-s<button className="ml-auto px-3 py-2 text-sm opacity-70 hover:opacity-100" onClick={() => setShowBack((b: boolean) => !b)}>Flip</button>
               </div>
             </div>
           )}
