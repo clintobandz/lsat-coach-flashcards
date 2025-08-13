@@ -1,4 +1,4 @@
-."use client";
+."se client";
 import { useEffect, useMemo, useState } from "react";
 
 type Card = { id: string; front: string; back: string; tag?: string; level: number; dueISO: string };
